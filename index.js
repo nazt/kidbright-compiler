@@ -15,7 +15,7 @@ var argv = require('yargs')
     .alias('context', 'c')
     .alias('flags', 'f')
     .demand('context')
-    .demand('kidbright')
+    // .demand('kidbright')
     .demand('flags')
     .showHelpOnFail(false, 'whoops, something went wrong! run with --help')
     .argv;
@@ -31,8 +31,10 @@ ${flags}, ${fs.existsSync(flags)}
 let content = {}
 content.context = JSON.parse(fs.readFileSync(context).toString())
 content.flags = JSON.parse(fs.readFileSync(flags).toString())
-content.context.PROCESS_DIR = argv.kidbright
-content.context.toolchain_dir = `${content.context.PROCESS_DIR}/xtensa-esp32-elf/bin`
+
+content.context.process_dir = content.context.kidbright
+content.context.toolchain_dir = `${content.context.process_dir}/xtensa-esp32-elf/bin`
+content.context.esptool = `${content.context.process_dir}/esptool`
 
 
 let Compiler = createCompiler(content.context)

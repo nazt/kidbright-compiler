@@ -1,19 +1,7 @@
 {
+  "kidbright": "/Users/nat/kidbright/KidBrightDev",
   "board_name": "80-7d-3a-a5-8c-0c",
   "mac_addr": "80:7d:3a:a5:8c:0c",
   "user_app_dir": "/Users/nat/kidbright/KidBrightDev/esp32/build/80-7d-3a-a5-8c-0c",
-  "esptool": "/Users/nat/kidbright/KidBrightDev/esptool",
-  "ide": {
-    "directories": {
-      "data": "data",
-      "plugins": "plugins"
-    },
-    "port_vid_pid": [
-      "04b4:0003",
-      "0403:6015"
-    ]
-  },
-  "data_dir": "/Users/nat/kidbright/KidBrightDev/data",
-  "plugins_dir": "/Users/nat/kidbright/KidBrightDev/plugins/node_modules",
   "board_id": "a58c0c"
 }

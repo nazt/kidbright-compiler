@@ -25,8 +25,8 @@ const setConfig = (AppContext) => {
     G.ELF_FILE = `${G.user_app_dir}/${G.board_name}.elf`
     G.BIN_FILE = `${G.user_app_dir}/${G.board_name}.bin`
     G.ARCHIVE_FILE = `${G.user_app_dir}/libmain.a`
-    G.PROCESS_DIR = AppContext.PROCESS_DIR || `${__dirname}/../..`
-    console.log(`APP_PATH=${G.PROCESS_DIR}`)
+    G.PROCESS_DIR = AppContext.process_dir || `${__dirname}/../..`
+    console.log(`APP_PATH=${G.process_dir}`)
 }
 const getName = (file) => path.basename(file).split('.')[0]
 let compileFiles = async function ({plugins_sources, cflags, plugins_includes_switch}, cb) {
@@ -43,7 +43,7 @@ let compileFiles = async function ({plugins_sources, cflags, plugins_includes_sw
         let cmd = `"${G.COMPILER_CPP}" ${cppOptions} ${cflags} ${plugins_includes_switch} -c "${file}" -o "${fn_obj}"`;
 
         try {
-            const {stdout, stderr} = await execPromise(G.ospath(cmd), {cwd: G.PROCESS_DIR})
+            const {stdout, stderr} = await execPromise(G.ospath(cmd), {cwd: G.process_dir})
             if (!stderr) {
                 G.Log.i(`compiling... ${path.basename(file)} ok.`);
                 G.Log.i(`${stdout}`);
@@ -63,7 +63,7 @@ let compileFiles = async function ({plugins_sources, cflags, plugins_includes_sw
 async function createBin() {
     console.log(`creating bin image... ${G.BIN_FILE}`);
     let cmd = `"${G.esptool}" --chip esp32 elf2image --flash_mode "dio" --flash_freq "40m" --flash_size "4MB" -o "${G.BIN_FILE}" "${G.ELF_FILE}"`
-    return execPromise(G.ospath(cmd), {cwd: G.PROCESS_DIR})
+    return execPromise(G.ospath(cmd), {cwd: G.process_dir})
 }
 
 async function linkObject({ldflags}) {
@@ -72,7 +72,7 @@ async function linkObject({ldflags}) {
         `--start-group ${ldflags} -L"${G.user_app_dir}" -lgcc -lstdc++ -lgcov -Wl,--end-group -Wl,-EL` +
         ` -o "${G.ELF_FILE}"`;
 
-    return execPromise(G.ospath(cmd), {cwd: G.PROCESS_DIR})
+    return execPromise(G.ospath(cmd), {cwd: G.process_dir})
 }
 
 
@@ -80,7 +80,7 @@ async function archiveProgram({plugins_sources}) {
     console.log(`archiving... ${G.ARCHIVE_FILE} `);
     let obj_files = plugins_sources.map(plugin => `${G.user_app_dir}/${getName(plugin)}.o`).join(" ")
     var cmd = `"${G.COMPILER_AR}" cru "${G.ARCHIVE_FILE}" ${obj_files}`
-    return execPromise(G.ospath(cmd), {cwd: G.PROCESS_DIR})
+    return execPromise(G.ospath(cmd), {cwd: G.process_dir})
 }
 
 module.exports = {
