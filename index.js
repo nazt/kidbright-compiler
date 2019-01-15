@@ -16,8 +16,8 @@ var argv = require('yargs')
         }
         let context = path.resolve(argv.context)
         let content = {}
-        
-        console.log(`${context}, ${fs.existsSync(context)} `)
+
+        // console.log(`${context}, ${fs.existsSync(context)} `)
 
         content.context = JSON.parse(fs.readFileSync(context).toString())
         content.context.process_dir = content.context.kidbright

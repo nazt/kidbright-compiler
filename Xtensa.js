@@ -26,7 +26,7 @@ const setConfig = (AppContext) => {
     G.BIN_FILE = `${G.user_app_dir}/${G.board_name}.bin`
     G.ARCHIVE_FILE = `${G.user_app_dir}/libmain.a`
     G.PROCESS_DIR = AppContext.process_dir || `${__dirname}/../..`
-    console.log(`APP_PATH=${G.process_dir}`)
+    console.log(`process_dir=${G.process_dir}`)
 }
 const getName = (file) => path.basename(file).split('.')[0]
 let compileFiles = async function ({plugins_sources, cflags, plugins_includes_switch}, cb) {
@@ -53,7 +53,6 @@ let compileFiles = async function ({plugins_sources, cflags, plugins_includes_sw
             cb && cb(e)
         }
         if (idx === arr.length - 1) {
-            console.log('compile all ok')
             cb && cb()
         }
     })
