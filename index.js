@@ -20,12 +20,11 @@ var argv = require('yargs')
         // console.log(`${context}, ${fs.existsSync(context)} `)
 
         content.context = JSON.parse(fs.readFileSync(context).toString())
-        content.context.process_dir = content.context.kidbright
+        content.context.process_dir = content.context.kidbright_path
         content.context.toolchain_dir = `${content.context.process_dir}/xtensa-esp32-elf/bin`
         content.context.esptool = `${content.context.process_dir}/esptool`
 
         let Compiler = createCompiler(content.context)
-
         Compiler.compile(content.context.compiler).then(() => {
             console.log('compile all files done')
         }).catch(err => {
