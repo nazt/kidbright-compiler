@@ -3,6 +3,7 @@
 const fs = require('fs')
 const path = require('path')
 const {createCompiler} = require('./Compiler')
+const pkg = require('./package')
 
 var argv = require('yargs')
     .usage('Usage: $0 <cmd> [options]') // usage string of application.
@@ -14,15 +15,14 @@ var argv = require('yargs')
             return
         }
         let context = path.resolve(argv.context)
-
-        console.log(`${context}, ${fs.existsSync(context)} `)
         let content = {}
-        content.context = JSON.parse(fs.readFileSync(context).toString())
+        
+        console.log(`${context}, ${fs.existsSync(context)} `)
 
+        content.context = JSON.parse(fs.readFileSync(context).toString())
         content.context.process_dir = content.context.kidbright
         content.context.toolchain_dir = `${content.context.process_dir}/xtensa-esp32-elf/bin`
         content.context.esptool = `${content.context.process_dir}/esptool`
-
 
         let Compiler = createCompiler(content.context)
 
@@ -33,29 +33,20 @@ var argv = require('yargs')
         })
     })
     .help('help')
-    .version('1.0.1', 'version', 'display version information') // the version string.
+    .version('version', pkg.version, 'display version information') // the version string.
     .alias('version', 'v')
     .alias('help', 'h')
     .alias('context', 'c')
-    // .alias('kidbright', 'k')
-    // .alias('flags', 'f')
-    // .demand('cmd')
-    // .demand('context')
-    // .demand('kidbright')
-    // .demand('flags')
-    .showHelpOnFail(false, 'whoops, something went wrong! run with --help')
+    // .demandOption(['w','h'])
+    .showHelpOnFail(true, 'whoops, something went wrong! run with --help')
     .command('generate', 'to generate dummy config.', yargs => {
-        // console.log(yargs)
+        // pass
     }, argv => {
-        console.log(`command generate has been called.`)
-        if (argv._[1] === 'flags') {
-            console.log(`generate flags`)
-        }
-        if (argv._[1] === 'cpp-options') {
-            console.log(`generate cpp-options`)
+        const dummy = fs.readFileSync(`${__dirname}/context.json`).toString()
+        if (argv._[1] === 'context') {
+            console.log(dummy)
         }
     })
     .demandCommand(1)
-    // .demandOption(['w','h'])
     .argv;
 
