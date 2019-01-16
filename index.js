@@ -15,20 +15,20 @@ var argv = require('yargs')
             return
         }
         let context = path.resolve(argv.context)
-        let content = {}
-
         // console.log(`${context}, ${fs.existsSync(context)} `)
+        context = JSON.parse(fs.readFileSync(context).toString())
+        context.process_dir = context.kidbright_path
+        context.toolchain_dir = `${context.process_dir}/xtensa-esp32-elf/bin`
+        context.esptool = `${context.process_dir}/esptool`
 
-        content.context = JSON.parse(fs.readFileSync(context).toString())
-        content.context.process_dir = content.context.kidbright_path
-        content.context.toolchain_dir = `${content.context.process_dir}/xtensa-esp32-elf/bin`
-        content.context.esptool = `${content.context.process_dir}/esptool`
+        let Compiler = createCompiler(context)
 
-        let Compiler = createCompiler(content.context)
-        Compiler.compile(content.context.compiler).then(() => {
+        context.compiler.plugins_sources.push(`${context.user_app_dir}/${context.board_name}/user_app.cpp`)
+        Compiler.compile(context.compiler).then(() => {
             console.log('compile all files done')
         }).catch(err => {
-            console.error(err)
+            console.error("project failed.")
+            // console.error(err)
         })
     })
     .help('help')

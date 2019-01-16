@@ -42,15 +42,17 @@ let compileFiles = async function ({plugins_sources, cflags, plugins_includes_sw
         let filename = getName(file)
         let fn_obj = `${G.user_app_dir}/${filename}.o`;
         let cmd = `"${G.COMPILER_CPP}" ${cppOptions} ${cflags} ${plugins_includes_switch} -c "${file}" -o "${fn_obj}"`;
-
         try {
             const {stdout, stderr} = await execPromise(G.ospath(cmd), {cwd: G.process_dir})
             if (!stderr) {
                 console.log(`compiling... ${path.basename(file)} ok.`);
                 // console.log(`${stdout}`);
+            } else {
+                console.log(`compiling... ${path.basename(file)} ok. (with warnings)`);
+                // console.log(`${stderr}`);
             }
         } catch (e) {
-            console.log(`catch error when compile file ${file}`)
+            console.log(`compiling... ${file} failed.`)
             cb && cb(e)
         }
         if (idx === arr.length - 1) {
