@@ -1,6 +1,7 @@
 {
   "kidbright_path": "/Users/nat/kidbright/KidBrightDev",
   "user_app_dir": "esp32/build",
+  "release_dir": "esp32/lib/release",
   "board_name": "80-7d-3a-a5-8c-0c",
   "compiler": {
     "plugins_sources": [

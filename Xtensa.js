@@ -1,6 +1,7 @@
 const path = require('path');
 const util = require('util');
 const execPromise = util.promisify(require('child_process').exec);
+const execSync = require('child_process').execSync;
 let G = {};
 
 const ospath = function (p) {
@@ -85,10 +86,24 @@ async function archiveProgram({plugins_sources}) {
     return execPromise(G.ospath(cmd), {cwd: G.process_dir})
 }
 
+async function flash({portname, G}) {
+    // var flash_cmd = `"${G.esptool}" --chip esp32 elf2image --flash_mode "dio" --flash_freq "40m" --flash_size "4MB" -o "${fname}" "${user_app_dir}/${board_name}.elf"`
+    // let cmd = `"${G.esptool}" --chip esp32 elf2image --flash_mode "dio" --flash_freq "40m" --flash_size "4MB" -o "${G.BIN_FILE}" "${G.ELF_FILE}"`
+    var flash_cmd = util.format(
+        `"${G.esptool}" --chip esp32 %s --before "default_reset" --after "hard_reset" write_flash -z --flash_mode "dio" --flash_freq "40m" --flash_size detect 0x1000 "%s" 0x8000 "%s" 0x10000 "%s"`,
+        `--port "${portname}" --baud 480600`,
+        `./${G.release_dir}/bootloader.bin`,
+        `./${G.release_dir}/partitions_singleapp.bin`,
+        `./${G.user_app_dir}/${G.board_name}/${G.board_name}.bin`
+    );
+    execSync(flash_cmd, {cwd: G.process_dir, stdio: 'inherit'})
+}
+
 module.exports = {
     createBin,
     linkObject,
     archiveProgram,
     compileProgram: util.promisify(compileFiles),
+    flash,
     setConfig,
 }
