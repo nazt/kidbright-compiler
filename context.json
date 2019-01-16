@@ -1,7 +1,7 @@
 {
   "kidbright_path": "/Users/nat/kidbright/KidBrightDev",
-  "board_name": "80-7d-3a-a5-8c-0c",
   "user_app_dir": "esp32/build",
+  "board_name": "80-7d-3a-a5-8c-0c",
   "compiler": {
     "plugins_sources": [
       "plugins/node_modules/display/lcd_i2c/lcd_i2c.cpp",
