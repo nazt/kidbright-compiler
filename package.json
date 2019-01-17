@@ -1,7 +1,7 @@
 {
   "name": "kidbright-compiler",
-  "version": "1.1.2",
-  "description": "",
+  "version": "1.1.3",
+  "description": "Kidbright compiler-cli",
   "main": "index.js",
   "bin": {
     "kidbright-compiler": "./index.js"
@@ -9,8 +9,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Nat Weerawan",
+  "license": "MIT",
+  "repository": "https://github.com/NAzT/kidbright-compiler",
   "dependencies": {
     "moment": "^2.23.0",
     "yargs": "^12.0.5"
