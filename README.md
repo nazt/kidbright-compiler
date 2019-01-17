@@ -1,5 +1,6 @@
 # kidbright-compiler
 
+		
 
 ## Installation
 	npm i -g kidbright-compiler
@@ -60,3 +61,7 @@
 
     Leaving...
     Hard resetting via RTS pin...
+ 
+## Generate a dummy configuration
+	  
+	kidbright-compiler generate > context.json
