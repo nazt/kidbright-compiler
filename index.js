@@ -7,7 +7,7 @@ const pkg = require('./package')
 
 var argv = require('yargs')
     .usage('Usage: $0 <cmd> [options]') // usage string of application.
-    .command('compile', 'to compile kidbright program.', yarg => {
+    .command('compile', 'compile kidbright program.', yarg => {
         // console.log(`call command compile`)
     }, argv => {
         if (!argv.context) {
@@ -32,21 +32,13 @@ var argv = require('yargs')
         })
     })
     .help('help')
-    .version('version', pkg.version, 'display version information') // the version string.
+    .version('version', pkg.version, `version ${pkg.version}`) // the version string.
     .alias('version', 'v')
     .alias('help', 'h')
     .alias('context', 'c')
     // .demandOption(['w','h'])
     .showHelpOnFail(true, 'whoops, something went wrong! run with --help')
-    .command('generate', 'to generate dummy config.', yargs => {
-        // pass
-    }, argv => {
-        const dummy = fs.readFileSync(`${__dirname}/context.json`).toString()
-        if (argv._[1] === 'context') {
-            console.log(dummy)
-        }
-    })
-    .command('flash', 'to generate dummy config.', yargs => {
+    .command('flash', 'flash device using esptool.', yargs => {
         // pass
     }, argv => {
         let context = path.resolve(argv.context)
@@ -66,6 +58,14 @@ var argv = require('yargs')
                 console.log(`port isn't exists.`)
             }
         }
+    })
+    .command('generate', 'generate dummy config.', yargs => {
+        // pass
+    }, argv => {
+        const dummy = fs.readFileSync(`${__dirname}/context.json`).toString()
+        console.log(dummy)
+        // if (argv._[1] === 'context') {
+        // }
     })
     .demandCommand(1)
     .argv;
