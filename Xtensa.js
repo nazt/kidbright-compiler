@@ -86,17 +86,17 @@ async function archiveProgram({plugins_sources}) {
     return execPromise(G.ospath(cmd), {cwd: G.process_dir})
 }
 
-async function flash({portname, G}) {
-    // var flash_cmd = `"${G.esptool}" --chip esp32 elf2image --flash_mode "dio" --flash_freq "40m" --flash_size "4MB" -o "${fname}" "${user_app_dir}/${board_name}.elf"`
-    // let cmd = `"${G.esptool}" --chip esp32 elf2image --flash_mode "dio" --flash_freq "40m" --flash_size "4MB" -o "${G.BIN_FILE}" "${G.ELF_FILE}"`
+async function flash({portname: port, baudrate, G, stdio}) {
+    baudrate = baudrate || 480600
+    stdio = stdio || "inherit"
     var flash_cmd = util.format(
         `"${G.esptool}" --chip esp32 %s --before "default_reset" --after "hard_reset" write_flash -z --flash_mode "dio" --flash_freq "40m" --flash_size detect 0x1000 "%s" 0x8000 "%s" 0x10000 "%s"`,
-        `--port "${portname}" --baud 480600`,
+        `--port "${port}" --baud ${baudrate}`,
         `./${G.release_dir}/bootloader.bin`,
         `./${G.release_dir}/partitions_singleapp.bin`,
         `./${G.user_app_dir}/${G.board_name}/${G.board_name}.bin`
     );
-    execSync(flash_cmd, {cwd: G.process_dir, stdio: 'inherit'})
+    execSync(flash_cmd, {cwd: G.process_dir, stdio})
 }
 
 module.exports = {
