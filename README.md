@@ -18,6 +18,10 @@
       --version, -v  1.1.3                                                 [boolean]
 
 
+# Example
+    $ kidbright-compiler compile --context=context.json
+    $ kidbright-compiler flash --context=context.json --port=/dev/tty.usbserial-DO01WLR4
+
 ## Compile
     $ kidbright-compiler compile --context=context.json
     
